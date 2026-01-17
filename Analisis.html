@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.2s; display: flex; flex-direction: column; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        h2 { color: #1f2937; font-weight: 800; letter-spacing: -0.025em; }
+        h3 { color: #4b5563; font-weight: 600; margin-bottom: 1rem; }
+        .analysis-text { color: #374151; font-size: 0.95rem; line-height: 1.6; margin-top: auto; }
+        .highlight { color: #2563eb; font-weight: 600; }
+        
+        /* Estilos para insights y citas */
+        .quote-box { border-left: 4px solid #3b82f6; background-color: #f9fafb; padding: 0.75rem; margin-top: 1rem; font-style: italic; color: #555; font-size: 0.85rem; }
+        .quote-item { margin-bottom: 0.5rem; display: block; }
+        .quote-item:last-child { margin-bottom: 0; }
+        
+        /* Estilos para respuestas largas destacadas */
+        .long-answer-highlight { 
+            background-color: #eff6ff; 
+            border: 1px solid #bfdbfe; 
+            border-radius: 6px; 
+            padding: 10px; 
+            margin-top: 8px;
+        }
+        .long-answer-badge {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        /* NUEVO ESTILO PARA LOS TOP 5 DESTACADOS */
+        .top-5-container {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            border-left: 4px solid #64748b; /* Default color */
+        }
+        .top-5-title {
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .top-5-item {
+            font-size: 0.8rem;
+            color: #475569;
+            padding-bottom: 6px;
+            margin-bottom: 6px;
+            border-bottom: 1px dashed #e2e8f0;
+            line-height: 1.3;
+        }
+        .top-5-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        /* Colores específicos para bordes de top 5 */
+        .border-blue { border-color: #3b82f6; color: #1e40af; }
+        .border-green { border-color: #10b981; color: #065f46; }
+        .border-purple { border-color: #8b5cf6; color: #5b21b6; }
+        .border-orange { border-color: #f97316; color: #9a3412; }
+        .border-red { border-color: #ef4444; color: #991b1b; }
+        .border-indigo { border-color: #6366f1; color: #3730a3; }
+        .border-teal { border-color: #14b8a6; color: #115e59; }
+
+        .proposal-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; background: #fff; margin-bottom: 1rem; }
+        .phase-badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; margin-right: 0.5rem; }
+        .series-step { display: flex; align-items: center; margin-bottom: 0.5rem; font-size: 0.85rem; }
+        .step-number { background: #e5e7eb; color: #374151; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; flex-shrink: 0; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-7xl mx-auto mb-10 text-center">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 mb-2">Estrategia 2026</h1>
+        <p class="text-gray-500 text-lg">Base de datos: 10 Respuestas | Diciembre 2025 - Enero 2026</p>
+    </header>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+
+        <div class="card p-6">
+            <h3>1. Calificación Última Cena de Gala</h3>
+            <div class="chart-container">
+                <canvas id="chartGala"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>Resumen:</strong> La satisfacción es extremadamente alta (Promedio: <strong>9.27</strong>).</p>
+                
+                <div class="top-5-container border-blue">
+                    <div class="top-5-title text-blue-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Propondría una encuesta para la comida... muchos no comieron por lácteos."</div>
+                    <div class="top-5-item">"Organizarnos mejor para que los chicos tuvieran más tiempo para interactuar."</div>
+                    <div class="top-5-item">"Tal vez un poco más de creatividad en cuanto a decoración y dinámicas."</div>
+                    <div class="top-5-item">"La cena tipo buffet me encantó, fue de mucha bendición."</div>
+                    <div class="top-5-item">"Le doy un 10, no cambiaría nada, me encantó la formalidad."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>2. Disposición de Apoyo</h3>
+            <div class="chart-container">
+                <canvas id="chartApoyo"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>Resumen:</strong> Unanimidad absoluta. El 100% dispuesto.</p>
+                
+
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>3. Actividad de Evangelismo (Económica)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="chart-container">
+                    <canvas id="chartEvangelismo"></canvas>
+                </div>
+                <div class="analysis-text space-y-2">
+                    <p class="font-bold text-blue-600">Tendencia: Experiencias Compartidas</p>
+                    
+                    <div class="top-5-container border-purple">
+                        <div class="top-5-title text-purple-800">📢 DESTACADOS</div>
+                        <div class="top-5-item">"Caminata repartiendo volantes hechos por nosotros con testimonios reales."</div>
+                        <div class="top-5-item">"Fogata al aire libre, ambiente relajado para invitar amigos."</div>
+                        <div class="top-5-item">"Devocionales mas intimos para predicar la palabra."</div>
+                        <div class="top-5-item">"Regalar gelatinas o chocolates con versículos en la calle."</div>
+                        <div class="top-5-item">"Una actividad de cine con una película de fe y luego un foro."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>4. Diseño del Próximo Servicio Especial</h3>
+            <div class="chart-container">
+                <canvas id="chartMeses"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>Mes Favorito:</strong> Julio.</p>
+                
+                <div class="top-5-container border-indigo">
+                    <div class="top-5-title text-indigo-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Tema: Reset, un nuevo comienzo. Lugar: Cabaña o parque."</div>
+                    <div class="top-5-item">"Estaciones de 'Tristeza', 'Confusión' y darles un pasaporte para sellar."</div>
+                    <div class="top-5-item">"Invitaciones con acertijos escondidos en la iglesia."</div>
+                    <div class="top-5-item">"Tema: El espíritu de Elías. Lugar: Un hotel o salón externo."</div>
+                    <div class="top-5-item">"Incluiría comida formal y un recuerdito como un pin del logo."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>5. ¿Más de un servicio especial al año?</h3>
+            <div class="chart-container">
+                <canvas id="chartFrecuencia"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p>El 90% a favor, con advertencias sobre organización.</p>
+                
+                <div class="top-5-container border-orange">
+                    <div class="top-5-title text-orange-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Me encantaría cada dos meses para romper la monotonía."</div>
+                    <div class="top-5-item">"Sí, pero implica más diligencia y no dejar cosas a última hora."</div>
+                    <div class="top-5-item">"A favor, ayuda a mantener el fuego avivado en el grupo."</div>
+                    <div class="top-5-item">"Sería bueno, siempre y cuando se organice con tiempo."</div>
+                    <div class="top-5-item">"Sí, totalmente a favor de tener más actividades especiales."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>6. ¿Qué falta para que asistan nuevos?</h3>
+            <div class="chart-container">
+                <canvas id="chartFalta"></canvas>
+            </div>
+            <div class="mt-4 analysis-text text-sm">
+                
+                <div class="top-5-container border-red">
+                    <div class="top-5-title text-red-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Posesivos deberíamos ser: tener su Excel y dar seguimiento semanal."</div>
+                    <div class="top-5-item">"Transformar los servicios: hacerlos más dinámicos y proactivos."</div>
+                    <div class="top-5-item">"Hermandad genuina, no solo saludarlos una vez y olvidarlos."</div>
+                    <div class="top-5-item">"Nos falta romper el hielo, a veces debe ser forzado al principio."</div>
+                    <div class="top-5-item">"Compromiso real de los que ya asisten para acoger a los nuevos."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>7. Predicación y Talentos del Grupo</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="chart-container">
+                    <canvas id="chartPredicar"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartTalentos"></canvas>
+                </div>
+            </div>
+            <div class="mt-4 analysis-text bg-purple-50 p-4 rounded-lg">
+                <div class="top-5-container border-indigo" style="background: white; margin-top: 0;">
+                    <div class="top-5-title text-indigo-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Me siento capaz, pero necesitaría ayuda para preparar el tema."</div>
+                    <div class="top-5-item">"Talentos: Edición de video, fotografía, 'hacerme la influencer'."</div>
+                    <div class="top-5-item">"Tal vez no facilidad de palabra, pero sí tengo revelación."</div>
+                    <div class="top-5-item">"Sí, estoy listo para predicar cuando me digan."</div>
+                    <div class="top-5-item">"Tengo facilidad para la música y el diseño gráfico."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>8. Recaudación de Fondos</h3>
+            <div class="chart-container">
+                <canvas id="chartFondos"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                
+                <div class="top-5-container border-teal">
+                    <div class="top-5-title text-teal-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Venta de accesorios: camisas, pines, pulseras del grupo."</div>
+                    <div class="top-5-item">"Venta de helados y granizadas para el verano."</div>
+                    <div class="top-5-item">"Rifas o un bazar con cosas donadas."</div>
+                    <div class="top-5-item">"Venta mensual de comida después del servicio."</div>
+                    <div class="top-5-item">"Ofrenda voluntaria específica para actividades."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>9. Temas Espirituales vs. Actuales</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 border rounded bg-indigo-50 flex flex-col">
+                    <h4 class="font-bold text-indigo-800 mb-2">Necesidad Espiritual</h4>
+                    <p class="text-sm text-gray-600 mb-2">Enfoque en identidad y santidad.</p>
+                </div>
+                <div class="p-4 border rounded bg-pink-50 flex flex-col">
+                    <h4 class="font-bold text-pink-800 mb-2">Necesidad Actual</h4>
+                    <p class="text-sm text-gray-600 mb-2">Enfoque en ansiedad y futuro.</p>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <div class="top-5-container border-red">
+                    <div class="top-5-title text-red-800">📢 5 Temas Más Solicitados</div>
+                    <div class="top-5-item">"Santidad y Dominio Propio: cómo apartarse del mundo."</div>
+                    <div class="top-5-item">"Salud mental y Ansiedad: la 'chaviza' sufre mucho por el futuro."</div>
+                    <div class="top-5-item">"Crisis existenciales y futuro profesional."</div>
+                    <div class="top-5-item">"Identidad: Quién soy en Cristo realmente."</div>
+                    <div class="top-5-item">"Relaciones y noviazgo a la luz de la Palabra."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>10. El "Termómetro" del Ambiente</h3>
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-1/2">
+                      <div class="chart-container">
+                        <canvas id="chartAmbiente"></canvas>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 flex flex-col justify-center">
+                    <h4 class="font-bold mb-2">Escala de Amistad (2.7/5)</h4>
+                    
+                    <div class="top-5-container border-orange">
+                        <div class="top-5-title text-orange-800">📢 DESTACADOS</div>
+                        <div class="top-5-item">"Siento que hay grupitos cerrados que dificultan la convivencia."</div>
+                        <div class="top-5-item">"Propongo juegos de roles obligatorios para mezclar a todos."</div>
+                        <div class="top-5-item">"Delegar a 10 jóvenes externos solo para dar bienvenida."</div>
+                        <div class="top-5-item">"Quitar las sillas y hacer círculos de refrigerio para obligar a hablar."</div>
+                        <div class="top-5-item">"A veces el ambiente se siente un poco frío e indiferente."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>11. Duración Ideal de Prédica</h3>
+            <div class="chart-container">
+                <canvas id="chartTiempo"></canvas>
+            </div>
+            <div class="mt-4 analysis-text text-center">
+                 <div class="top-5-container border-blue text-left">
+                    <div class="top-5-title text-blue-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"30 - 40 minutos es lo ideal."</div>
+                    <div class="top-5-item">"Prefiero que sea interactivo, no solo escuchar."</div>
+                    <div class="top-5-item">"Si la prédica es buena, el tiempo no importa."</div>
+                    <div class="top-5-item">"Más dinámica, menos monólogo."</div>
+                    <div class="top-5-item">"Respetar el tiempo para poder convivir después."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>12. Red Social Predilecta</h3>
+            <div class="chart-container">
+                <canvas id="chartRedes"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <div class="top-5-container border-indigo">
+                    <div class="top-5-title text-indigo-800">📢 DESTACADOS</div>
+                    <div class="top-5-item">"Usar Instagram para historias diarias."</div>
+                    <div class="top-5-item">"Videos cortos de reflexión (Reels/TikTok)."</div>
+                    <div class="top-5-item">"Hacer estadísticas o preguntas en redes."</div>
+                    <div class="top-5-item">"Facebook para los padres, Instagram para nosotros."</div>
+                    <div class="top-5-item">"Mejorar la calidad visual de las publicaciones."</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<div class="card p-6">
+            <h3>13. ¿Qué te detiene al invitar? (Personal)</h3>
+            <div class="chart-container">
+                <canvas id="chartBarrerasPersonal"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>El enemigo #1:</strong> La inseguridad interna (timidez/miedo) supera por mucho a la logística.</p>
+                
+                <div class="top-5-container border-red">
+                    <div class="top-5-title text-red-800">📢 Testimonios Reales</div>
+                    <div class="top-5-item">"Mi cobardía y mi timidez. Quedarme con la mente en blanco."</div>
+                    <div class="top-5-item">"Que sepan mi pasado y no quieran aceptar la invitación por venir de un vaso sucio."</div>
+                    <div class="top-5-item">"Soy introvertida... me cuesta establecer conversaciones."</div>
+                    <div class="top-5-item">"No tener cómo llevarlo (transporte)."</div>
+                    <div class="top-5-item">"Miedo a que me responda de mala gana."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>14. ¿Qué nos detiene como Grupo?</h3>
+            <div class="chart-container">
+                <canvas id="chartBarrerasGrupo"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>Síndrome de Marta:</strong> Estamos tan ocupados sirviendo (privilegios) que olvidamos a las personas.</p>
+                
+                <div class="top-5-container border-orange">
+                    <div class="top-5-title text-orange-800">📢 5 Opiniones Clave</div>
+                    <div class="top-5-item">"Por tener otros privilegios termino olvidando saludar a los nuevos."</div>
+                    <div class="top-5-item">"Estamos enfocados en lo que tenemos que hacer... no nos fijamos en quién llega."</div>
+                    <div class="top-5-item">"Ser exclusivos. Grupos cerrados e indiferencia."</div>
+                    <div class="top-5-item">"No sabemos romper el hielo, a veces debe ser forzado al principio."</div>
+                    <div class="top-5-item">"Somos reactivos y no proactivos."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>15. Contenido Deseado en Redes</h3>
+            <div class="chart-container">
+                <canvas id="chartContenido"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <div class="top-5-container border-indigo">
+                    <div class="top-5-title text-indigo-800">📢 Lo más pedido</div>
+                    <div class="top-5-item">1. Videos cortos de Reflexión (Reels/TikTok).</div>
+                    <div class="top-5-item">2. Versículos diarios (Imágenes).</div>
+                    <div class="top-5-item">3. Resúmenes de las prédicas (Recaps).</div>
+                    <div class="top-5-item">4. "Rhemas" cortos de 1 minuto.</div>
+                    <div class="top-5-item">5. Diseños sobre Cristo y la vida en Él.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>16. Metas Prioritarias 2025</h3>
+            <div class="chart-container">
+                <canvas id="chartMetas"></canvas>
+            </div>
+            <div class="mt-4 analysis-text bg-blue-50 p-4 rounded-lg">
+                <p><strong>Consenso Claro:</strong> Evangelismo (Nuevos) y Discipulado (Compromiso) son la prioridad, por encima de la doctrina teórica.</p>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>17. Herramienta Necesaria para Evangelizar</h3>
+            <div class="chart-container">
+                <canvas id="chartHerramientas"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                <p><strong>Necesidad de Apologética:</strong> El grupo pide capacitación intelectual.</p>
+                
+                <div class="top-5-container border-purple">
+                    <div class="top-5-title text-purple-800">📢 El Ganador Indiscutible</div>
+                    <div class="top-5-item font-bold text-purple-900">"Un Podcast de cómo responder preguntas difíciles sobre Dios."</div>
+                    <div class="top-5-item mt-2 text-xs text-gray-500">Esto sugiere que los jóvenes sienten inseguridad intelectual al evangelizar.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6">
+            <h3>18. "Me gustaría sentirme más..."</h3>
+            <div class="chart-container">
+                <canvas id="chartSentimiento"></canvas>
+            </div>
+            <div class="mt-4 analysis-text">
+                 <div class="top-5-container border-teal">
+                    <div class="top-5-title text-teal-800">📢 Palabras del Corazón</div>
+                    <div class="top-5-item">"Incluida y saber que no soy desconocida."</div>
+                    <div class="top-5-item">"En confianza / En familia."</div>
+                    <div class="top-5-item">"Cómoda y aceptada."</div>
+                    <div class="top-5-item">"Lleno del Espíritu Santo."</div>
+                    <div class="top-5-item">"Como una familia y como una milicia."</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card p-6 col-span-1 md:col-span-2">
+            <h3>19. Propuestas para Cambiar el Ambiente</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-4 border border-blue-200 rounded-lg bg-blue-50">
+                    <h4 class="font-bold text-blue-900 mb-2">Estrategia Estructural</h4>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+                        <li><strong>"Delegar de 5 a 10 jóvenes externos"</strong>: Crear un equipo de bienvenida que NO tenga otro privilegio ese día.</li>
+                        <li><strong>"Seguimiento asignado"</strong>: Asignar nuevos según edad y afinidad a un líder específico.</li>
+                        <li><strong>"Romper el hielo forzado"</strong>: Dinámicas de rompecabezas o juegos obligatorios al inicio.</li>
+                    </ul>
+                </div>
+                <div class="p-4 border border-orange-200 rounded-lg bg-orange-50">
+                    <h4 class="font-bold text-orange-900 mb-2">Estrategia Espiritual</h4>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+                        <li><strong>"Interceder por unidad"</strong>: Orar específicamente contra la indiferencia.</li>
+                        <li><strong>"Más adoración"</strong>: Darle más tiempo a la ministración y uso del Shofar.</li>
+                        <li><strong>"Humildad"</strong>: Mostrarnos como amigos y hermanos, no como "santos inalcanzables".</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    <section class="max-w-7xl mx-auto mt-12 mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-4 border-blue-500 pb-2 inline-block">Propuesta: Series 2025-2026</h2>
+        
+        <div class="mb-12">
+            <h3 class="text-2xl text-blue-800 mb-6">A. Series para Servicios Normales (Formato Secuencial)</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="proposal-card border-l-8 border-l-blue-600 shadow-md">
+                    <h4 class="text-xl font-bold mb-2 text-blue-900">1. Serie: RESET (Identidad)</h4>
+                    <p class="text-sm text-gray-500 mb-4"><em>Estructura de 5 Servicios Secuenciales (Reset 1, 2, 3, 4 y 5)</em></p>
+                    
+                    <div class="space-y-3">
+                        <div class="series-step">
+                            <span class="step-number">1</span>
+                            <div>
+                                <span class="font-bold text-xs text-blue-600 uppercase">Expectativa</span>
+                                <p class="text-xs text-gray-600">Lanzamiento video "Error 404: Identity Not Found". Encuesta anónima sobre inseguridades.</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">2</span>
+                            <div>
+                                <span class="font-bold text-xs text-green-600 uppercase">Realización</span>
+                                <p class="text-xs text-gray-600">Servicio dinámico. Dinámica de "Etiquetas" (pegarse etiquetas negativas y quitarlas al orar).</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">3</span>
+                            <div>
+                                <span class="font-bold text-xs text-purple-600 uppercase">Recap / Seguimiento</span>
+                                <p class="text-xs text-gray-600">Entrega de "Carnet de Identidad en Cristo". Video resumen en redes para cerrar la serie.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proposal-card border-l-8 border-l-orange-500 shadow-md">
+                    <h4 class="text-xl font-bold mb-2 text-orange-800">2. Serie: LA MESA (Convivencia)</h4>
+                    <p class="text-sm text-gray-500 mb-4"><em>Estructura similar a la anterior, pero con <strong>Alimentos</strong> obligatorios.</em></p>
+                    
+                    <div class="space-y-3">
+                        <div class="series-step">
+                            <span class="step-number">1</span>
+                            <div>
+                                <span class="font-bold text-xs text-blue-600 uppercase">Expectativa</span>
+                                <p class="text-xs text-gray-600">Invitación personalizada tipo "Menú". Venta previa de tickets de comida a bajo costo.</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">2</span>
+                            <div>
+                                <span class="font-bold text-xs text-green-600 uppercase">Realización</span>
+                                <p class="text-xs text-gray-600">Servicio "Mesa 1: Pizza & Verdad". No hay sillas en filas, solo mesas redondas. Se come MIENTRAS se comparte el tema.</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">3</span>
+                            <div>
+                                <span class="font-bold text-xs text-purple-600 uppercase">Recap / Seguimiento</span>
+                                <p class="text-xs text-gray-600">Postear fotos de grupos comiendo juntos. Reto: Invitar a alguien nuevo a comer la próxima vez.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proposal-card border-l-8 border-l-teal-500 shadow-md">
+                    <h4 class="text-xl font-bold mb-2 text-teal-800">3. Serie: VOCES REALES</h4>
+                    <p class="text-sm text-gray-500 mb-4"><em>Estructura de Testimonios y Entrevistas (Adoración)</em></p>
+                    
+                    <div class="space-y-3">
+                        <div class="series-step">
+                            <span class="step-number">1</span>
+                            <div>
+                                <span class="font-bold text-xs text-blue-600 uppercase">Expectativa</span>
+                                <p class="text-xs text-gray-600">Campaña "Mi historia" en Instagram. Seleccionar 3 historias impactantes.</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">2</span>
+                            <div>
+                                <span class="font-bold text-xs text-green-600 uppercase">Realización</span>
+                                <p class="text-xs text-gray-600">Formato Podcast en vivo sobre testimonios de jovenes (previamente preparados). Música de fondo. Solo micrófonos y conversación cruda y real sobre temas difíciles.</p>
+                            </div>
+                        </div>
+                        <div class="series-step">
+                            <span class="step-number">3</span>
+                            <div>
+                                <span class="font-bold text-xs text-purple-600 uppercase">Recap / Seguimiento</span>
+                                <p class="text-xs text-gray-600">Clips cortos de las frases más impactantes de los testimonios ("Reels").</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-2xl text-yellow-600 mb-4">B. Cierre de Series</h3>
+            
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row border border-gray-200">
+                    <div class="bg-blue-600 p-4 md:w-16 flex items-center justify-center text-white font-bold writing-vertical text-center transform md:rotate-180" style="writing-mode: vertical-rl;">JULIO</div>
+                    <div class="p-6 w-full">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-2xl font-bold text-gray-800">1. Cierre RESET: "CAMPAMENTO URBANO"</h4>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">Culminación Serie 1</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm mt-2">La serie de Identidad termina saliendo de las 4 paredes.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-gray-200 text-gray-700">Conexión</span>
+                                <p>Todos los temas vistos en "Reset 1, 2, 3, 4 y 5" se ponen en práctica en actividades de campo y fogata.</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-green-100 text-green-800">Evento</span>
+                                <p>Día completo al aire libre. Ministración final donde se "queman" las cartas escritas durante la serie.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row border border-gray-200">
+                    <div class="bg-orange-500 p-4 md:w-16 flex items-center justify-center text-white font-bold writing-vertical text-center transform md:rotate-180" style="writing-mode: vertical-rl;">DICIEMBRE</div>
+                    <div class="p-6 w-full">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-2xl font-bold text-gray-800">2. Cierre MESA: "GALA: LA GRAN MESA"</h4>
+                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded">Culminación Serie 2</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm mt-2">La serie de alimentos y convivencia explota en su máxima expresión.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-gray-200 text-gray-700">Conexión</span>
+                                <p>Se usan las mesas redondas practicadas durante la serie. Se premia la asistencia a las cenas mensuales.</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-green-100 text-green-800">Evento</span>
+                                <p>Cena Formal de alta calidad. Menú inclusivo (sin lácteos). Show de talentos en cada mesa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col md:flex-row border border-gray-200">
+                    <div class="bg-teal-500 p-4 md:w-16 flex items-center justify-center text-white font-bold writing-vertical text-center transform md:rotate-180" style="writing-mode: vertical-rl;">ABRIL</div>
+                    <div class="p-6 w-full">
+                        <div class="flex justify-between items-start">
+                            <h4 class="text-2xl font-bold text-gray-800">3. Cierre VOCES: "INVASIÓN URBANA"</h4>
+                            <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2 py-1 rounded">Culminación Serie 3</span>
+                        </div>
+                        <p class="text-gray-600 mb-4 text-sm mt-2">Los testimonios internos se convierten en proclamación externa.</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-gray-200 text-gray-700">Conexión</span>
+                                <p>Los jóvenes que compartieron testimonio en la serie ahora lideran grupos de evangelismo callejero.</p>
+                            </div>
+                            <div class="bg-gray-50 p-3 rounded">
+                                <span class="phase-badge bg-green-100 text-green-800">Evento</span>
+                                <p>Repartición masiva de volantes creativos (diseñados en la serie). Espacio especial en la caminata evangelistica tipo Flashmob artístico.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- DATA SETUP ---
+        const allNames = ['Heydy', 'Brayan', 'Alejandra', 'Pablo', 'Byron', 'Jonathan', 'Vianka', 'Dania', 'Jafet', 'Mia'];
+        const colors = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#6366f1', '#14b8a6', '#f97316', '#64748b'];
+
+        const footerCallback = (tooltipItems) => {
+            const index = tooltipItems[0].dataIndex;
+            const dataset = tooltipItems[0].dataset;
+            if (dataset.voters && dataset.voters[index]) {
+                return 'Votos: ' + dataset.voters[index].join(', ');
+            }
+            return '';
+        };
+
+        // 1. Chart Gala (MODIFICADO: Agrupado por calificación)
+        const galaScores = [10, 10, 10, 10, 8, 9, 8.7, 10, 9, 8];
+        const scoreCounts = {};
+        galaScores.forEach(s => scoreCounts[s] = (scoreCounts[s] || 0) + 1);
+        const sortedScores = Object.keys(scoreCounts).sort((a,b) => b - a);
+        const sortedCounts = sortedScores.map(k => scoreCounts[k]);
+
+        new Chart(document.getElementById('chartGala'), {
+            type: 'bar',
+            data: {
+                labels: sortedScores,
+                datasets: [{
+                    label: 'Cantidad de Personas',
+                    data: sortedCounts,
+                    backgroundColor: colors.slice(0, sortedScores.length),
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } },
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (items) => 'Calificación: ' + items[0].label,
+                            label: (item) => item.raw + ' personas votaron esta nota'
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Apoyo (Doughnut)
+        new Chart(document.getElementById('chartApoyo'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Sí, dispuesto'],
+                datasets: [{
+                    data: [10],
+                    backgroundColor: ['#10b981'],
+                    voters: [allNames]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 3. Evangelismo (Categorized)
+        const evCategories = ['Aire Libre / Deporte', 'Regalos / Comida', 'Impacto Social/Escuelas', 'Creatividad/Videos'];
+        const evData = [4, 3, 2, 1];
+        const evVoters = [
+            ['Heydy', 'Jonathan', 'Dania', 'Mia'],
+            ['Alejandra', 'Vianka', 'Pablo'],
+            ['Brayan', 'Jafet'],
+            ['Byron']
+        ];
+
+        new Chart(document.getElementById('chartEvangelismo'), {
+            type: 'pie',
+            data: {
+                labels: evCategories,
+                datasets: [{
+                    data: evData,
+                    backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6'],
+                    voters: evVoters
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 4. Mes Preferido
+        const mesLabels = ['Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'];
+        const mesData = [2, 2, 1, 2, 5];
+        const mesVoters = [
+            ['Brayan', 'Mia'],
+            ['Pablo', 'Vianka'],
+            ['Dania'],
+            ['Jonathan', 'Dania'],
+            ['Pablo', 'Byron', 'Jafet', 'Mia', 'Dania']
+        ];
+
+        new Chart(document.getElementById('chartMeses'), {
+            type: 'bar',
+            data: {
+                labels: mesLabels,
+                datasets: [{
+                    label: 'Votos por Mes',
+                    data: mesData,
+                    backgroundColor: '#8b5cf6',
+                    voters: mesVoters
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 5. Frecuencia (+ de 1 servicio)
+        new Chart(document.getElementById('chartFrecuencia'), {
+            type: 'pie',
+            data: {
+                labels: ['Sí', 'Sí (condicionado)'],
+                datasets: [{
+                    data: [8, 2],
+                    backgroundColor: ['#10b981', '#f59e0b'],
+                    voters: [
+                        ['Heydy', 'Brayan', 'Alejandra', 'Byron', 'Jonathan', 'Vianka', 'Dania', 'Jafet'],
+                        ['Pablo (Bimestral)', 'Mia (Solo si hay organización)']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 6. Falta para asistencia (Keywords)
+        new Chart(document.getElementById('chartFalta'), {
+            type: 'polarArea',
+            data: {
+                labels: ['Dinamismo/Cambiar Rutina', 'Seguimiento/Atención', 'Profundidad Espiritual', 'Unidad/Hermandad'],
+                datasets: [{
+                    data: [3, 4, 2, 1],
+                    backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b', '#10b981'],
+                    voters: [
+                        ['Heydy', 'Jonathan', 'Byron'],
+                        ['Vianka', 'Dania', 'Mia', 'Jafet'],
+                        ['Brayan', 'Alejandra'],
+                        ['Pablo']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 7. Predicar
+        new Chart(document.getElementById('chartPredicar'), {
+            type: 'bar',
+            data: {
+                labels: ['Sí, listo', 'Sí, con ayuda'],
+                datasets: [{
+                    label: 'Disposición',
+                    data: [5, 4],
+                    backgroundColor: ['#10b981', '#f59e0b', '#94a3b8'],
+                    voters: [
+                        ['Heydy', 'Brayan', 'Pablo', 'Byron', 'Jonathan','Vianka'],
+                        ['Alejandra', 'Dania', 'Jafet', 'Mia']
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 8. Fondos
+        new Chart(document.getElementById('chartFondos'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Sí, Venta Mensual', 'No, prefiero otras formas'],
+                datasets: [{
+                    data: [7, 3],
+                    backgroundColor: ['#3b82f6', '#ef4444'],
+                    voters: [
+                        ['Brayan', 'Alejandra', 'Pablo', 'Byron', 'Jonathan', 'Vianka', 'Dania'],
+                        ['Heydy', 'Jafet', 'Mia']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 7b. Talentos (Radar)
+        new Chart(document.getElementById('chartTalentos'), {
+            type: 'radar',
+            data: {
+                labels: ['Fotografía', 'Diseño', 'Música', 'Redes Sociales', 'Organización', 'Facilidad Palabra', 'Edición Video'],
+                datasets: [{
+                    label: 'Habilidades del Grupo',
+                    data: [4, 3, 2, 5, 4, 3, 3],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    pointBackgroundColor: 'rgb(59, 130, 246)',
+                }]
+            },
+            options: {
+                scales: { r: { suggestMin: 0, suggestedMax: 6 } }
+            }
+        });
+
+        // 10. Ambiente vs Rating
+        new Chart(document.getElementById('chartAmbiente'), {
+            type: 'bar',
+            data: {
+                labels: ['Cálido', 'Un poco frío/Indiferente'],
+                datasets: [{
+                    label: 'Percepción del Ambiente',
+                    data: [2, 8],
+                    backgroundColor: ['#10b981', '#ef4444'],
+                    voters: [
+                        ['Heydy', 'Jafet'],
+                        ['Brayan', 'Alejandra', 'Pablo', 'Byron', 'Jonathan', 'Vianka', 'Dania', 'Mia']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 11. Tiempo Prédica
+        new Chart(document.getElementById('chartTiempo'), {
+            type: 'pie',
+            data: {
+                labels: ['30-40 mins', 'Sin límite (si es bueno)', 'Interactivo'],
+                datasets: [{
+                    label: 'Duración',
+                    data: [6, 2, 2],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b'],
+                    voters: [
+                        ['Alejandra', 'Pablo', 'Jonathan', 'Vianka', 'Dania', 'Jafet', 'Mia'],
+                        ['Heydy', 'Brayan'],
+                        ['Byron (Interactivo)']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+
+        // 12. Redes Sociales
+        new Chart(document.getElementById('chartRedes'), {
+            type: 'bar',
+            data: {
+                labels: ['Instagram', 'Facebook', 'TikTok', 'YouTube'],
+                datasets: [{
+                    label: 'Red Preferida',
+                    data: [5, 2, 1, 2],
+                    backgroundColor: ['#ec4899', '#3b82f6', '#000000', '#ef4444'],
+                    voters: [
+                        ['Pablo', 'Vianka', 'Jafet', 'Mia', 'Dania'],
+                        ['Brayan', 'Jonathan'],
+                        ['Heydy'],
+                        ['Byron', 'Dania']
+                    ]
+                }]
+            },
+            options: {
+                plugins: { tooltip: { callbacks: { footer: footerCallback } } }
+            }
+        });
+new Chart(document.getElementById('chartBarrerasPersonal'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Inseguridad/Timidez/Miedo', 'Logística (Transporte)', 'Miedo al Pasado/Juicio', 'Nada'],
+                datasets: [{
+                    data: [5, 1, 2, 1], // Basado en el conteo manual de los datos
+                    backgroundColor: ['#ef4444', '#f59e0b', '#6366f1', '#10b981']
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+        });
+
+        // 14. Barreras Grupo
+        new Chart(document.getElementById('chartBarrerasGrupo'), {
+            type: 'bar',
+            data: {
+                labels: ['Enfoque en Tareas/Privilegios', 'Falta Habilidad Social', 'Grupos Cerrados/Exclusividad', 'Falta Compromiso'],
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: [4, 3, 2, 2], // Privilegios es el problema #1 mencionado
+                    backgroundColor: ['#ef4444', '#f97316', '#8b5cf6', '#94a3b8']
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: false } }
+        });
+
+        // 15. Contenido
+        new Chart(document.getElementById('chartContenido'), {
+            type: 'pie',
+            data: {
+                labels: ['Videos Cortos/Reflexión', 'Versículos', 'Resúmenes Prédicas', 'Todo'],
+                datasets: [{
+                    data: [6, 4, 2, 1], 
+                    backgroundColor: ['#ec4899', '#3b82f6', '#10b981', '#f59e0b']
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
+        });
+
+        // 16. Metas (Horizontal Bar)
+        new Chart(document.getElementById('chartMetas'), {
+            type: 'bar',
+            data: {
+                labels: ['Nuevos entregando vida a Cristo', 'Compromiso (Dejar inconstancia)', 'Unidad / No grupos cerrados', 'Doctrina / Biblia', 'Adoración Profunda'],
+                datasets: [{
+                    label: 'Votos (Opción Múltiple)',
+                    data: [9, 8, 6, 4, 4], // Estimado basado en la frecuencia visual de las respuestas largas
+                    backgroundColor: '#2563eb'
+                }]
+            },
+            options: { indexAxis: 'y', maintainAspectRatio: false, plugins: { legend: false } }
+        });
+
+        // 17. Herramientas
+        new Chart(document.getElementById('chartHerramientas'), {
+            type: 'bar',
+            data: {
+                labels: ['Podcast (Preguntas Difíciles)', 'Invitación Digital (WhatsApp)', 'Folleto Creativo'],
+                datasets: [{
+                    label: 'Preferencia',
+                    data: [5, 3, 2], // Conteo exacto: 5 Podcast, 3 Invitación, 2 Folleto
+                    backgroundColor: ['#8b5cf6', '#22c55e', '#f59e0b']
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: false } }
+        });
+
+        // 18. Sentimiento (Word Cloud simulación con Pie)
+        new Chart(document.getElementById('chartSentimiento'), {
+            type: 'pie',
+            data: {
+                labels: ['Pertenencia (Familia/Aceptada)', 'Espiritualidad (Llena/Santa)', 'Seguridad (Confianza)'],
+                datasets: [{
+                    data: [6, 2, 2],
+                    backgroundColor: ['#f43f5e', '#8b5cf6', '#0ea5e9']
+                }]
+            },
+            options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+        });
+    </script>
+</body>
+</html>
